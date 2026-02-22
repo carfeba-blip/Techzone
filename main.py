@@ -8,11 +8,10 @@ st.set_page_config(page_title='Techzone')
 st.title('Gestión de inventario')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ARCHIVO = os.path.join(BASE_DIR, 'InventarioTechzone.xlsx')
+ARCHIVO = os.path.join(BASE_DIR, 'InventarioTechZone.xlsx')
 
 if not os.path.exists(ARCHIVO):
     st.error(f'⚠️ Archivo no encontrado: "{ARCHIVO}"')
-    st.info
     st.stop()  
 else:
     try:

@@ -1,21 +1,32 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from datetime import date,datetime,timedelta
+from datetime import date, datetime, timedelta
+import os
 
-#Pregunta 1
 st.set_page_config(page_title='Techzone')
 st.title('Gestión de inventario')
 
-ARCHIVO='InventarioTechzone.xlsx'
-try:
-    df=pd.read_excel(ARCHIVO)
-except FileNotFoundError:
-    st.error(f'Archivo no encontrado {ARCHIVO}..')
-except Exception as e:
-    st.error('Ha ocurrido un error al cargar el archivo...')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ARCHIVO = os.path.join(BASE_DIR, 'InventarioTechzone.xlsx')
+
+if not os.path.exists(ARCHIVO):
+    st.error(f'⚠️ Archivo no encontrado: "{ARCHIVO}"')
+    st.info
+    st.stop()  
 else:
-    st.success(f'Archivo {ARCHIVO} cargado correctamente')
+    try:
+        df = pd.read_excel(ARCHIVO, engine='openpyxl')
+        st.success(f'✅ Archivo cargado correctamente')
+        
+        if 'FechaIngreso' in df.columns:
+            df['FechaIngreso'] = pd.to_datetime(df['FechaIngreso'])
+        
+        st.write(df.head())
+
+    except Exception as e:
+        st.error(f'Ha ocurrido un error al procesar el archivo: {e}')
+        st.stop()
 
 # pregunta 2
 
